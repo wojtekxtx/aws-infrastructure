@@ -1,5 +1,5 @@
 output "dsn" {
-  value = "postgresql://${var.username}:${random_password.this.result}@${var.hostname}:${var.port}/${var.dbname}"
+  value = "${var.schema}://${var.username}:${random_password.this.result}@${var.hostname}:${var.port}/${var.dbname}"
 }
 
 output "password" {

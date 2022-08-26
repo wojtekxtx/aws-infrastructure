@@ -26,3 +26,12 @@ variable "dbname" {
     error_message = "Var dbname can't be empty."
   }
 }
+
+variable "schema" {
+  type    = string
+  default = "postgresql"
+  validation {
+    condition     = contains(["postgresql", "postgresql+asyncpg"], var.schema)
+    error_message = "Valid schema values are (postgresql, postgresql+asyncpg)."
+  }
+}
