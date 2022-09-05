@@ -13,3 +13,7 @@ output "ecs_service" {
 output "target_group" {
   value = aws_alb_target_group.this
 }
+
+output "log_group" {
+  value = module.ecs_task.log_group
+}

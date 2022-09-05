@@ -5,3 +5,7 @@ output "sqs_queue" {
 output "sqs_env_map" {
   value = { (var.sqs_env_name) = aws_sqs_queue.this.arn }
 }
+
+output "log_group" {
+  value = aws_cloudwatch_log_group.this
+}
