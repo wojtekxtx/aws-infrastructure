@@ -1,4 +1,16 @@
-variable "name" {
+variable "db_name" {
+  type = string
+}
+
+variable "rds_name" {
+  type = string
+}
+
+variable "environment" {
+  type = string
+}
+
+variable "kms_alias" {
   type = string
 }
 
@@ -85,9 +97,4 @@ variable "backup_window" {
 variable "maintenance_window" {
   type    = string
   default = "sun:02:00-sun:05:00"
-}
-
-variable "identifier" {
-  type    = string
-  default = ""
 }

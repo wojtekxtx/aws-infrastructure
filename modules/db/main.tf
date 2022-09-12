@@ -1,3 +1,7 @@
+locals {
+  resource_name = "${var.rds_name}-${var.environment}"
+}
+
 resource "random_password" "this" {
   length      = 32
   special     = false
@@ -10,8 +14,21 @@ resource "random_password" "this" {
   min_upper   = 2
 }
 
+resource "aws_ssm_parameter" "credentials" {
+  name = "/${local.resource_name}/credentials"
+  type = "SecureString"
+  value = jsonencode({
+    username = var.username,
+    password = random_password.this.result,
+    host     = aws_db_instance.this.address,
+    db_name  = var.db_name,
+    }
+  )
+  key_id = var.kms_alias
+}
+
 resource "aws_db_subnet_group" "this" {
-  name       = var.identifier
+  name       = local.resource_name
   subnet_ids = var.subnet_ids
   lifecycle {
     create_before_destroy = true
@@ -22,7 +39,7 @@ resource "aws_db_subnet_group" "this" {
 }
 
 resource "aws_db_parameter_group" "this" {
-  name   = var.identifier
+  name   = local.resource_name
   family = "postgres${var.pg_major}"
   lifecycle {
     create_before_destroy = true
@@ -30,8 +47,8 @@ resource "aws_db_parameter_group" "this" {
 }
 
 resource "aws_db_instance" "this" {
-  identifier     = var.identifier
-  db_name        = var.name
+  identifier     = local.resource_name
+  db_name        = var.db_name
   engine         = "postgres"
   engine_version = "${var.pg_major}.${var.pg_minor}"
   instance_class = var.instance_class
@@ -61,7 +78,7 @@ resource "aws_db_instance" "this" {
   auto_minor_version_upgrade   = true
   apply_immediately            = var.apply_immediately
   skip_final_snapshot          = false
-  final_snapshot_identifier    = "${var.identifier}-final"
+  final_snapshot_identifier    = "${local.resource_name}-final"
   performance_insights_enabled = false
   deletion_protection          = true
   delete_automated_backups     = false
