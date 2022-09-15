@@ -23,6 +23,6 @@ variable "kms_alias" {
 
 variable "ignored_value_secrets" {
   description = "List of parameters, that values are ignored. Will be created/destroyed."
-  type        = list(string)
+  type        = set(string)
   default     = []
 }
