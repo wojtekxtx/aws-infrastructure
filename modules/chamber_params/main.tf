@@ -4,6 +4,12 @@ resource "aws_ssm_parameter" "this" {
   type     = "SecureString"
   value    = each.value
   key_id   = var.kms_alias
+  lifecycle {
+    precondition {
+      condition     = !contains(var.ignored_value_secrets, each.key)
+      error_message = "Key \"${each.key}\" found in ignored_values secrets. Remove duplicates."
+    }
+  }
 }
 
 resource "aws_ssm_parameter" "ignored_values" {
