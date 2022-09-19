@@ -50,7 +50,7 @@ resource "aws_db_instance" "this" {
   identifier     = local.resource_name
   db_name        = var.db_name
   engine         = "postgres"
-  engine_version = "${var.pg_major}.${var.pg_minor}"
+  engine_version = var.pg_major
   instance_class = var.instance_class
   username       = var.username
   password       = random_password.this.result

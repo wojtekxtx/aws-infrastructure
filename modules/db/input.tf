@@ -74,11 +74,6 @@ variable "pg_major" {
   default = 13
 }
 
-variable "pg_minor" {
-  type    = number
-  default = 3
-}
-
 variable "backup_retention_period" {
   type    = number
   default = 7
