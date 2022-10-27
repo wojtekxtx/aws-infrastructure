@@ -24,3 +24,8 @@ resource "aws_ssm_parameter" "ignored_values" {
     ]
   }
 }
+
+data "aws_ssm_parameter" "ignored_values" {
+  for_each = aws_ssm_parameter.ignored_values
+  name     = each.value.name
+}
