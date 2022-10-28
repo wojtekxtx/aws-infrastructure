@@ -51,7 +51,9 @@ resource "aws_instance" "this" {
 
   root_block_device {
     delete_on_termination = true
-    encrypted             = false
+    
+    # ASS jebać kurwa php
+    encrypted             = true
     volume_size           = 20
     volume_type           = "gp2"
   }
